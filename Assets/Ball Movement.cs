@@ -4,6 +4,7 @@ using System.Runtime.CompilerServices;
 using UnityEngine;
 
 
+
 public class BallMovement : MonoBehaviour
 {
     // Start is called before the first frame update
@@ -16,7 +17,8 @@ public class BallMovement : MonoBehaviour
     private void AddStartingForce()
     {
         float x = Random.value < 0.5f ? -1.0f : 1.0f;
-        float y = Random.value < 0.5f ? -1.0f : 1.0f; //temporary
+        float y = Random.value < 0.5f ? Random.Range(-1.0f, 0.5f) :
+                                        Random.Range(0.5f, 1.0f);
     }
     // Update is called once per frame
     void Update()
@@ -24,3 +26,4 @@ public class BallMovement : MonoBehaviour
         
     }
 }
+// THIS SCRIPT IS A MESS, SCRAP IT WHEN YOU CAN
