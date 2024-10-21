@@ -34,28 +34,28 @@ public class UnifiedPong : MonoBehaviour
     {
         // floats for constraining calculations to time, ball speed, and paddle speed
         float dt = Time.deltaTime;
-        float ballinSwiftly = 16.0f;
-        float paddleSpd = 10.0f
+        float ballinSwiftly = 40.0f;
+        float paddleSpd = 28.0f;
 
         // Move Left paddle up or down with W or S
         if (Input.GetKey(KeyCode.W))
         {
-            LPaddle.transform.position = Vector3.up * paddleSpd * dt;
+            LPaddle.transform.position += Vector3.up * paddleSpd * dt;
         }
         else if (Input.GetKey(KeyCode.S))
         {
-            LPaddle.transform.position = Vector3.down * paddleSpd * dt;
+            LPaddle.transform.position += Vector3.down * paddleSpd * dt;
         }
 
         // Move Right paddle up or down with ArrowUp or ArrowDown
 
         if (Input.GetKey(KeyCode.UpArrow))
         {
-            RPaddle.transform.position = Vector3.up * paddleSpd * dt;
+            RPaddle.transform.position += Vector3.up * paddleSpd * dt;
         }
         else if (Input.GetKey(KeyCode.DownArrow))
         {
-            RPaddle.transform.position = Vector3.down * paddleSpd * dt;
+            RPaddle.transform.position += Vector3.down * paddleSpd * dt;
         }
 
         // Measuring the play objects
@@ -92,16 +92,29 @@ public class UnifiedPong : MonoBehaviour
         float yMinBallin = yBallin - hhBallin;
         float yMaxBallin = yBallin + hhBallin;
 
-        // Ball collision logic
+        // Keep the ball in the play area
+
+
+        // Logic for ball to collide with paddles 
+
+        if (xBallin < xMaxRPaddle && xBallin > xMinRPaddle && yBallin < yMaxRPaddle && yBallin > yMinRPaddle)
+        {
+            ballinToWhere = Vector2.Reflect(ballinToWhere, Vector2.right);
+        }
+        if (xBallin < xMaxLPaddle && xBallin > xMinLPaddle && yBallin < yMaxLPaddle && yBallin > yMinLPaddle)
+        {
+            ballinToWhere = Vector2.Reflect(ballinToWhere, Vector2.left);
+        }
 
         if (ballin.transform.position.x > 44.0f || ballin.transform.position.x < -44.0f) // Vinny taught me about how to use the "||" operator, props to him
         {
             ballinToWhere.x = -ballinToWhere.x;
         }
-        if (ballin.transform.position.y > 44.0f || ballin.transform.position.y > -44.0f)
+        if (ballin.transform.position.y > 44.0f || ballin.transform.position.y < -44.0f)
         {
             ballinToWhere.y = -ballinToWhere.y;
         }
+
 
         // Ball movement logic
         Vector3 ballinAndShiftin = ballinToWhere * ballinSwiftly * dt;
