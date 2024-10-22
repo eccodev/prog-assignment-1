@@ -1,4 +1,3 @@
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class UnifiedPong : MonoBehaviour
@@ -35,7 +34,7 @@ public class UnifiedPong : MonoBehaviour
         // floats for constraining calculations to time, ball speed, and paddle speed
         float dt = Time.deltaTime;
         float ballinSwiftly = 40.0f;
-        float paddleSpd = 28.0f;
+        float paddleSpd = 38.0f;
 
         // Move Left paddle up or down with W or S
         if (Input.GetKey(KeyCode.W))
@@ -105,6 +104,8 @@ public class UnifiedPong : MonoBehaviour
         {
             ballinToWhere = Vector2.Reflect(ballinToWhere, Vector2.left);
         }
+
+        // Keeps the ball in-bounds
 
         if (ballin.transform.position.x > 44.0f || ballin.transform.position.x < -44.0f) // Vinny taught me about how to use the "||" operator, props to him
         {
