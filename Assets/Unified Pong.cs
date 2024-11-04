@@ -12,6 +12,9 @@ public class UnifiedPong : MonoBehaviour
     BoxCollider2D RPaddleBox;
     BoxCollider2D ballinCollider;
 
+    int scorePaddle1 = 0;
+    int scorePaddle2 = 0;
+
     // Vector direction for the ball on start
     Vector2 ballinToWhere = Vector2.right;
 
@@ -24,7 +27,7 @@ public class UnifiedPong : MonoBehaviour
         ballinCollider = ballin.GetComponent<BoxCollider2D>();
 
         // Trig to send the ball in a direction
-        float angle = 30.0f * Mathf.Deg2Rad;
+        float angle = Random.Range(0.0f, 360.0f) * Mathf.Deg2Rad;
         ballinToWhere = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle));
     }
 
@@ -107,20 +110,42 @@ public class UnifiedPong : MonoBehaviour
 
         // Keeps the ball in-bounds
 
-        if (ballin.transform.position.x > 44.0f || ballin.transform.position.x < -44.0f) // Vinny taught me about how to use the "||" operator, props to him
-        {
-            ballinToWhere.x = -ballinToWhere.x;
-        }
-        if (ballin.transform.position.y > 44.0f || ballin.transform.position.y < -44.0f)
-        {
-            ballinToWhere.y = -ballinToWhere.y;
-        }
-
 
         // Ball movement logic
-        Vector3 ballinAndShiftin = ballinToWhere * ballinSwiftly * dt;
-        ballin.transform.position += ballinAndShiftin;
+        if (xBallin > 43.0f)
+        {
+            scorePaddle2++;
+            Debug.Log("Paddle 2 Score: " + scorePaddle2);
+            ResetBallPosition();
+        }
+        else if (xBallin < -43.0f)
+        {
+            scorePaddle1++;
+            Debug.Log("Paddle 1 Score: " + scorePaddle1);
+            ResetBallPosition();
+        }
+        else
+        {
+            if (xBallin > 44.0f || xBallin < -44.0f)
+            {
+                ballinToWhere.x = -ballinToWhere.x;
+            }
 
-        // TODO: SCORING AND RESETTING BALL
+            if (yBallin > 44.0f || yBallin < -44.0f)
+            {
+                ballinToWhere.y = -ballinToWhere.y;
+            }
+
+        }
+        Vector3 ballChange = ballinToWhere * ballinSwiftly * dt;
+        ballin.transform.position += ballChange;
+
+        void ResetBallPosition()
+        {
+            ballin.transform.position = new Vector3(Random.Range(-5.0f, 5.0f), Random.Range(-3.0f, 3.0f), 0f);
+            float angle = Random.Range(0.0f, 360.0f) * Mathf.Deg2Rad;
+            ballinToWhere = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle));
+            // TODO: SCORING AND RESETTING BALL
+        }
     }
 }
